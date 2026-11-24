@@ -217,5 +217,57 @@
     setMenu(force === undefined ? !menu.hasAttribute('data-open') : force);
   };
 
+  /*
+   * Modo app (embed.html no Google Sites): links internos com href="#..."
+   * fazem o Google Sites rolar o frame pai (~88 px) para esconder o header,
+   * cortando o header do site. Removemos o href e rolamos com window.scrollTo,
+   * que fica restrito ao iframe.
+   */
+  function initEmbeddedNav() {
+    if (!document.body || document.body.getAttribute('data-embed-mode') !== 'single') return;
+
+    /* Sem rolagem suave: o salto animado entre seções parece "tela deslocando". */
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    var offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
+    if (!isFinite(offset) || offset <= 0) {
+      var header = document.querySelector('.site-header');
+      offset = header ? header.offsetHeight + 8 : 96;
+    }
+
+    function goTo(hash) {
+      var target = document.querySelector(hash);
+      if (!target) return;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'auto' });
+      setMenu(false);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      var hash = link.getAttribute('href');
+      if (!hash || hash === '#') return;
+
+      link.removeAttribute('href');
+      link.setAttribute('data-embed-target', hash);
+      link.setAttribute('role', 'link');
+      link.setAttribute('tabindex', '0');
+
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        setMenu(false);
+        goTo(hash);
+      });
+
+      link.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        setMenu(false);
+        goTo(hash);
+      });
+    });
+  }
+
+  initEmbeddedNav();
+
   document.documentElement.classList.add('is-ready');
 })();

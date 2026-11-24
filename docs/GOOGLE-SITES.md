@@ -1,6 +1,6 @@
 ﻿# Publicar no Google Sites — Drª Carla Chaves
 
-Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.3`
+Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.4`
 publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 
 > O Google Sites não hospeda HTML/CSS/JS próprios. Ele incorpora cada arquivo em um iframe
@@ -10,8 +10,8 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 ## 1. Antes de colar
 
 1. Confirme no navegador (tag exata, sem `@main`):
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.3/dist/main.min.css`
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.3/dist/main.min.js`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.4/dist/main.min.css`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.4/dist/main.min.js`
    - uma imagem, uma fonte e `assets/videos/dicas-01.mp4`
 2. Rode localmente `npm run build:release`, `npm run check`, `npm run sri` e `npm run heights`.
 3. Publique a tag no GitHub antes de abrir o Google Sites (jsDelivr pode levar alguns minutos).
@@ -113,6 +113,6 @@ Qualquer mudança em copy, CSS, JS, imagens ou vídeos exige:
 
 1. Editar `src/`/`assets/` (nunca `dist/`).
 2. Rodar build/check/sri/heights/qa.
-3. `npm run build:release` com a **nova tag** (`v1.0.3`, `v1.1.0`, ...).
+3. `npm run build:release` com a **nova tag** (`v1.0.4`, `v1.1.0`, ...).
 4. Commit do `dist/`, tag e push.
 5. Recolar **todos** os blocos no Sites (o hash/tag mudou) e reaplicar as alturas.

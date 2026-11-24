@@ -23,7 +23,7 @@ npm run build:release
 ```
 
 - Confirme que `dist/embed.html` e os 8 `dist/embed-*.html` foram gerados.
-- Commit da fonte + `dist/`; tag anotada `v1.0.3`; push de `main` e da tag.
+- Commit da fonte + `dist/`; tag anotada `v1.0.4`; push de `main` e da tag.
 - Não edite `dist/` à mão.
 
 ## GitHub
@@ -34,7 +34,7 @@ npm run build:release
 
 ## jsDelivr
 
-- `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.3/dist/main.min.css`
+- `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.4/dist/main.min.css`
 - `.../dist/main.min.js`
 - `.../dist/embed-hero.html` (e demais embeds)
 - `.../assets/img/og-carla-chaves.png`, `.../assets/videos/dicas-01.mp4`, PDFs e fontes.

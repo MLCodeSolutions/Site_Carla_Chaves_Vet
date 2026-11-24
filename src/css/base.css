@@ -218,3 +218,8 @@ html:has(body[data-embed-mode="single"]),
 body[data-embed-mode="single"] {
   overscroll-behavior-y: contain;
 }
+
+/* Links internos convertidos em navegacao JS no modo app. */
+body[data-embed-mode="single"] [data-embed-target] {
+  cursor: pointer;
+}
