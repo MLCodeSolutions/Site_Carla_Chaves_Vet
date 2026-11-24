@@ -1,4 +1,4 @@
-# QA — Drª Carla Chaves (v1.0.2)
+# QA — Drª Carla Chaves (v1.0.3)
 
 Data: 2026-11-24
 
@@ -27,20 +27,19 @@ Data: 2026-11-24
 ## Publicação
 
 - Repositório público: `https://github.com/MLCodeSolutions/Site_Carla_Chaves_Vet`
-- `v1.0.2` adiciona:
-  - logo da marca no boot loader via **PNG base64 inline** (sem requisição extra);
-  - `dist/embed-conteudo.html`, um bloco único **sem header/menu/barra fixa** para quem não quer
-    os 8 blocos;
-  - correção de `srcset`/`poster` (v1.0.1) mantida.
-- Alturas do bloco único: **17803 / 14091 / 10059 px** (390/768/1440).
-- O `dist/embed.html` continua sendo contingência e não deve ser colado no Sites.
-- Após publicar a tag v1.0.2, usar `embed-conteudo.html` **ou** os 8 embeds; não misturar com a
-  v1.0.1.
+- `v1.0.3` adiciona:
+  - fechamento do menu em qualquer link interno, clique fora, `hashchange` e rolagem;
+  - `overscroll-behavior: contain` no modo `embed.html` único para evitar scroll chaining;
+  - modo app documentado: `embed.html` com altura **700–760 px** (menu funciona, rolagem interna).
+- Teste local em iframe de 700 px: menu abriu, fechou no clique, rolou até Serviços
+  (`scrollY=6814`), sem overflow horizontal.
+- `v1.0.2` adicionou logo no loader via PNG base64 inline e `embed-conteudo.html` (um bloco sem
+  header/menu). Fotos seguem no jsDelivr; `srcset`/`poster` absolutos desde a v1.0.1.
 
 ## Pendências
 
-- Publicação no Google Sites é manual (não há API/credencial): colar o bloco escolhido, aplicar a
-  altura e testar na URL publicada (`docs/GOOGLE-SITES.md`).
+- No Google Sites, usar `embed.html` da v1.0.3 em um bloco de 700–760 px; publicar e testar na URL
+  publicada (`docs/GOOGLE-SITES.md`).
 - Revogar/rotacionar o token que circulou no chat; ele não foi gravado no repositório nem no
   remote do Git.
 - Confirmar autorização da cliente para expor fotos/vídeos em repositório público.

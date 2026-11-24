@@ -184,6 +184,25 @@
     });
   });
 
+  /* Fecha o menu em qualquer link interno, inclusive sem data-menu-close. */
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    var link = target && target.closest ? target.closest('a[href^="#"]') : null;
+    if (link) setMenu(false);
+
+    if (!menu || !menu.hasAttribute('data-open')) return;
+    if (target.closest && (target.closest('[data-sc-menu]') || target.closest('[data-burger]'))) return;
+    setMenu(false);
+  });
+
+  window.addEventListener('hashchange', function () {
+    setMenu(false);
+  });
+
+  window.addEventListener('scroll', function () {
+    if (menu && menu.hasAttribute('data-open')) setMenu(false);
+  }, { passive: true });
+
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') setMenu(false);
   });

@@ -5,7 +5,7 @@ A página vive no Google Sites; os 8 blocos de seção são HTML incorporado ser
 imutável do jsDelivr. O site **não** é publicado por GitHub Pages.
 
 - Repositório: `MLCodeSolutions/Site_Carla_Chaves_Vet` (público)
-- Tag de produção: `v1.0.2` (publicada; validada no jsDelivr)
+- Tag de produção: `v1.0.3` (publicada; validada no jsDelivr)
 - Página inteira (contingência): `dist/embed.html`
 - Blocos recomendados: 8 arquivos `dist/embed-*.html`
 - Falta apenas colar os 8 blocos no Google Sites e publicar (`docs/GOOGLE-SITES.md`).
@@ -31,7 +31,7 @@ src/index.html + src/css/* + src/js/*
 |---|---|
 | `npm ci` | Instala as versões do lockfile (Node ≥ 20). |
 | `npm run build` | Gera `dist/` local para preview. |
-| `npm run build:release` | Gera `dist/` com URLs absolutas da tag `v1.0.2`. |
+| `npm run build:release` | Gera `dist/` com URLs absolutas da tag `v1.0.3`. |
 | `npm run preview` | Sobe `http://localhost:8080/` para preview. |
 | `npm run check` | Valida fonte, assets, CSP/SRI/loader, embeds e alturas. |
 | `npm run sri` | Confere os hashes sha384 nos 9 HTML. |
@@ -51,15 +51,28 @@ src/index.html + src/css/* + src/js/*
 | 7 | `dist/embed-faq-cta.html` | Dúvidas + CTA |
 | 8 | `dist/embed-contato.html` | Contato + rodapé |
 
-### Bloco único (sem header/menu)
+### Bloco único com menu (modo app)
 
-Para usar **um só bloco** no Google Sites, use `dist/embed-conteudo.html`: ele contém todas as
-seções + rodapé, **sem** header, menu interno ou barra fixa. É o formato indicado quando você não
-quer a rolagem dupla do `embed.html`.
+Para manter o header/menu do site em **um único bloco**, use `dist/embed.html` com altura de
+**700–760 px** no Google Sites. O site rola **dentro** do bloco; o menu abre, fecha no clique e
+navega pelas seções. É o modo indicado para quem quer o menu do site no embed.
+
+- Não use a altura total do conteúdo (~10.059 px): o iframe não terá rolagem interna e o menu não
+  navegará.
+- A rolagem interna é esperada nesse modo. Se sobrar espaço branco, aumente um pouco a altura; se
+  houver rolagem dupla, reduza 20–40 px.
+- Há `overscroll-behavior: contain` para o scroll não vazar para a página do Google Sites.
+
+### Bloco único sem menu
+
+Para usar **um só bloco sem menu interno**, use `dist/embed-conteudo.html`: ele contém todas as
+seções + rodapé, **sem** header, menu interno ou barra fixa.
 
 Alturas medidas: **17803 / 14091 / 10059 px** (390/768/1440). O Google Sites usa uma altura fixa
-por bloco; ajuste conforme o dispositivo principal. O menu nativo do Sites não rola para dentro do
-iframe — use Início/Contato ou páginas separadas.
+por bloco; ajuste conforme o dispositivo principal.
+
+O `dist/embed.html` só deve ser usado no modo app (700–760 px). Com a altura total ele causa
+rolagem dupla/espaço branco.
 
 O `dist/embed.html` (página inteira com header/menu) existe só como contingência e **não deve ser
 colado no Sites**: o menu interno rola dentro do iframe e gera rolagem dupla/espaço branco.
@@ -117,7 +130,7 @@ dist/                 gerado; commitado na tag
 
 1. Rode `npm ci`, `npm run build`, `npm run check`, `npm run sri`, `npm run heights` e `npm run qa:embeds`.
 2. `npm run build:release`.
-3. Commit da fonte + `dist/`; tag anotada `v1.0.2`; push de `main` e da tag (requer `gh auth login`).
+3. Commit da fonte + `dist/`; tag anotada `v1.0.3`; push de `main` e da tag (requer `gh auth login`).
 4. Valide CSS/JS/assets no jsDelivr com a tag exata.
 5. Cole os embeds no Google Sites e publique (veja `docs/GOOGLE-SITES.md`).
 6. Em qualquer mudança de CSS/JS, gere nova tag e recole todos os blocos.

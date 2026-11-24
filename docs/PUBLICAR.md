@@ -23,7 +23,7 @@ npm run build:release
 ```
 
 - Confirme que `dist/embed.html` e os 8 `dist/embed-*.html` foram gerados.
-- Commit da fonte + `dist/`; tag anotada `v1.0.2`; push de `main` e da tag.
+- Commit da fonte + `dist/`; tag anotada `v1.0.3`; push de `main` e da tag.
 - Não edite `dist/` à mão.
 
 ## GitHub
@@ -34,7 +34,7 @@ npm run build:release
 
 ## jsDelivr
 
-- `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.2/dist/main.min.css`
+- `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.3/dist/main.min.css`
 - `.../dist/main.min.js`
 - `.../dist/embed-hero.html` (e demais embeds)
 - `.../assets/img/og-carla-chaves.png`, `.../assets/videos/dicas-01.mp4`, PDFs e fontes.
@@ -42,6 +42,9 @@ npm run build:release
 ## Google Sites
 
 - Fundo `#F7F4EA`, tema mínimo, largura total, sem borda nos blocos.
-- 8 blocos na ordem e alturas da tabela de `docs/GOOGLE-SITES.md`.
+- Para **um bloco com menu**, use `embed.html` com altura **700–760 px** (modo app, rolagem
+  interna). Não use a altura total do conteúdo.
+- Para **um bloco sem menu**, use `embed-conteudo.html` com altura total (17803/14091/10059).
+- Para **8 blocos**, use a tabela de `docs/GOOGLE-SITES.md`.
 - Favicon e OG nativos; menu enxuto.
 - Publicar como “Qualquer pessoa”; testar a URL publicada em Chrome, Safari iOS e Android.

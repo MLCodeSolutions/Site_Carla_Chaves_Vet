@@ -212,3 +212,9 @@ summary::-webkit-details-marker {
 /* Boot loader: escondido quando o app terminou de montar. */
 html.is-ready #mlcs-boot{opacity:0!important;visibility:hidden!important;pointer-events:none!important;animation:none!important}
 html.is-ready #mlcs-boot *{animation:none!important}
+
+/* Embed unico em modo app: evita scroll chaining para o Google Sites. */
+html:has(body[data-embed-mode="single"]),
+body[data-embed-mode="single"] {
+  overscroll-behavior-y: contain;
+}
