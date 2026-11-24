@@ -144,7 +144,14 @@ const minify = async (html) => {
   return out.replace(/^\uFEFF/, "").trim() + "\n";
 };
 
-const toBase = (html) => (dataBase ? html.replace(/(src|href)="\.\.\/assets\//g, `$1="${dataBase}`) : html);
+const toBase = (html) => {
+  if (!dataBase) return html;
+  return html
+    .replace(/(src|href|poster)="\.\.\/assets\//g, `$1="${dataBase}`)
+    .replace(/srcset="([^"]*)"/g, (_match, urls) =>
+      'srcset="' + urls.replace(/(^|,\s*)\.\.\/assets\//g, (_m, prefix) => prefix + dataBase) + '"'
+    );
+};
 
 // Remove do embed tudo o que o Google Sites ignora (SEO/JSON-LD), mantendo fontes.
 function stripSeoHead(html) {

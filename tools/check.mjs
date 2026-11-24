@@ -97,6 +97,9 @@ for (const file of expected) {
   if (!html.includes("style-src 'self' https://cdn.jsdelivr.net")) fail(`${file}: style-src inesperado`);
   if (!html.includes("script-src 'self' https://cdn.jsdelivr.net")) fail(`${file}: script-src inesperado`);
   if (/raw\.githubusercontent\.com|@main/.test(html)) fail(`${file}: URL movel/raw no embed`);
+  if (html.includes('data-base="http') && /(srcset|poster)="[^"]*\.\.\/assets\//.test(html)) {
+    fail(`${file}: srcset/poster com caminho relativo no release`);
+  }
   if (/class="site-header"/.test(html)) fail(`${file}: header global presente`);
   if (/class="mobile-bar"/.test(html)) fail(`${file}: mobile-bar presente`);
   if (/class="skip-link"/.test(html)) fail(`${file}: skip-link presente`);

@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "site-carla-chaves-vet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Site da Drª Carla Chaves (veterinária domiciliar) para Google Sites via GitHub + jsDelivr.",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "node tools/build.mjs",
-    "build:release": "node tools/build.mjs --cdn=https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.0",
+    "build:release": "node tools/build.mjs --cdn=https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1",
     "check": "node tools/check.mjs",
     "sri": "node tools/sri.mjs",
     "preview": "node tools/preview.mjs",
@@ -28,3 +28,4 @@
     "svgo": "4.1.0"
   }
 }
+

@@ -1,6 +1,6 @@
 ﻿# Publicar no Google Sites — Drª Carla Chaves
 
-Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.0`
+Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.1`
 publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 
 > O Google Sites não hospeda HTML/CSS/JS próprios. Ele incorpora cada arquivo em um iframe
@@ -10,8 +10,8 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 ## 1. Antes de colar
 
 1. Confirme no navegador (tag exata, sem `@main`):
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.0/dist/main.min.css`
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.0/dist/main.min.js`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1/dist/main.min.css`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1/dist/main.min.js`
    - uma imagem, uma fonte e `assets/videos/dicas-01.mp4`
 2. Rode localmente `npm run build:release`, `npm run check`, `npm run sri` e `npm run heights`.
 3. Publique a tag no GitHub antes de abrir o Google Sites (jsDelivr pode levar alguns minutos).
