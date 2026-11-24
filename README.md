@@ -4,10 +4,11 @@ Site da Drª Carla Chaves empacotado para o **Google Sites** via **GitHub + jsDe
 A página vive no Google Sites; os 8 blocos de seção são HTML incorporado servido pela tag
 imutável do jsDelivr. O site **não** é publicado por GitHub Pages.
 
-- Repositório: `MLCodeSolutions/Site_Carla_Chaves_Vet`
-- Tag de produção: `v1.0.0`
+- Repositório: `MLCodeSolutions/Site_Carla_Chaves_Vet` (público)
+- Tag de produção: `v1.0.0` (publicada; validada no jsDelivr)
 - Página inteira (contingência): `dist/embed.html`
 - Blocos recomendados: 8 arquivos `dist/embed-*.html`
+- Falta apenas colar os 8 blocos no Google Sites e publicar (`docs/GOOGLE-SITES.md`).
 
 ## Como funciona
 

@@ -24,9 +24,19 @@ Data: 2026-11-24
 - SRI sha384 + CSP sem `'unsafe-inline'` (somente hash do loader).
 - Nenhum `VetCasa`, telefone antigo ou CRMV placeholder na fonte/embeds.
 
+## Publicação
+
+- Repositório público: `https://github.com/MLCodeSolutions/Site_Carla_Chaves_Vet`
+- `main` e tag `v1.0.0` enviados (commit `5c566b9`).
+- jsDelivr na tag exata: CSS, JS, imagem, vídeo e `embed-hero.html` retornam **200**.
+- Teste com CDN real (sem roteamento local): hero e dicas carregam CSS/JS com SRI, vídeos
+  `readyState=4` e console sem erros.
+
 ## Pendências
 
-- Push/tag no GitHub depende de autenticação (`gh auth login`); o token colado no chat foi
-  considerado comprometido e não deve ser reutilizado.
-- Publicação no Google Sites é manual; aplicar alturas e testar na URL publicada.
+- Publicação no Google Sites é manual (não há API/credencial): colar os 8 embeds, aplicar as
+  alturas e testar na URL publicada (`docs/GOOGLE-SITES.md`).
+- Revogar/rotacionar o token que circulou no chat; ele não foi gravado no repositório nem no
+  remote do Git.
 - Confirmar autorização da cliente para expor fotos/vídeos em repositório público.
+
