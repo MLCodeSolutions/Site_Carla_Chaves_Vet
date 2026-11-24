@@ -1,4 +1,4 @@
-# QA — Drª Carla Chaves (v1.0.4)
+# QA — Drª Carla Chaves (v1.0.5)
 
 Data: 2026-11-24
 
@@ -27,6 +27,12 @@ Data: 2026-11-24
 ## Publicação
 
 - Repositório público: `https://github.com/MLCodeSolutions/Site_Carla_Chaves_Vet`
+- `v1.0.5`:
+  - corrige a reabertura do menu (remove fechamento por `scroll`, `stopPropagation` no burger);
+  - adiciona rolagem animada (~350–650 ms) no modo app via rAF + `window.scrollTo`, com cancelamento
+    por wheel/touch e sem mover o frame do Google Sites;
+  - adiciona reveal suave, underline do menu, drop do menu, hover lift e destaque da seção alvo;
+  - `qa:app` valida 3 ciclos abrir/fechar/reabrir, scroll animado, reveal e `prefers-reduced-motion`.
 - `v1.0.4` corrige o deslocamento no desktop:
   - links internos do header/menu deixam de ter `href="#..."` no modo app;
   - navegação usa `window.scrollTo` imediato (sem `scrollIntoView`/smooth), restrito ao iframe;
@@ -38,7 +44,7 @@ Data: 2026-11-24
 
 ## Pendências
 
-- No Google Sites, usar `embed.html` da v1.0.4 em um bloco de 700–760 px; publicar e testar na URL
+- No Google Sites, usar `embed.html` da v1.0.5 em um bloco de 700–760 px; publicar e testar na URL
   publicada (`docs/GOOGLE-SITES.md`).
 - Revogar/rotacionar o token que circulou no chat; ele não foi gravado no repositório nem no
   remote do Git.

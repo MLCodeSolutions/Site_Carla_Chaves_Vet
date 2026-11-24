@@ -159,6 +159,7 @@
   var menu = document.querySelector('[data-sc-menu]');
   var burger = document.querySelector('[data-burger]');
   var burgerIcon = document.querySelector('[data-sc-burger]');
+  var cancelEmbedScroll = null;
 
   function setMenu(open) {
     if (!menu) return;
@@ -173,8 +174,11 @@
   }
 
   if (burger) {
-    burger.addEventListener('click', function () {
-      setMenu(!menu.hasAttribute('data-open'));
+    burger.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var willOpen = !menu.hasAttribute('data-open');
+      if (willOpen && cancelEmbedScroll) cancelEmbedScroll();
+      setMenu(willOpen);
     });
   }
 
@@ -199,10 +203,6 @@
     setMenu(false);
   });
 
-  window.addEventListener('scroll', function () {
-    if (menu && menu.hasAttribute('data-open')) setMenu(false);
-  }, { passive: true });
-
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') setMenu(false);
   });
@@ -226,7 +226,6 @@
   function initEmbeddedNav() {
     if (!document.body || document.body.getAttribute('data-embed-mode') !== 'single') return;
 
-    /* Sem rolagem suave: o salto animado entre seções parece "tela deslocando". */
     document.documentElement.style.scrollBehavior = 'auto';
 
     var offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
@@ -235,12 +234,75 @@
       offset = header ? header.offsetHeight + 8 : 96;
     }
 
+    var rafId = 0;
+    var highlightTimer = 0;
+    var navToken = 0;
+
+    function cancelScroll() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+
+    cancelEmbedScroll = function () {
+      navToken += 1;
+      cancelScroll();
+    };
+
+    function animateTo(targetY, target) {
+      var startY = window.pageYOffset;
+      var diff = targetY - startY;
+      if (Math.abs(diff) < 2 || reduceMotion) {
+        window.scrollTo({ top: targetY, left: 0, behavior: 'auto' });
+        return;
+      }
+
+      var duration = Math.min(650, Math.max(350, 350 + Math.abs(diff) * 0.05));
+      var start = performance.now();
+
+      function step(now) {
+        var t = Math.min(1, (now - start) / duration);
+        var eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        window.scrollTo({ top: startY + diff * eased, left: 0, behavior: 'auto' });
+        if (t < 1) {
+          rafId = requestAnimationFrame(step);
+        } else {
+          /* Corrige se fontes/imagens mudaram a posição do alvo durante a animação. */
+          var finalY = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          if (Math.abs(finalY - targetY) > 2) {
+            window.scrollTo({ top: Math.max(0, finalY), left: 0, behavior: 'auto' });
+          }
+          rafId = 0;
+        }
+      }
+
+      rafId = requestAnimationFrame(step);
+    }
+
     function goTo(hash) {
       var target = document.querySelector(hash);
       if (!target) return;
-      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-      window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'auto' });
-      setMenu(false);
+
+      var token = ++navToken;
+
+      function run() {
+        if (token !== navToken) return;
+        var targetY = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        cancelScroll();
+        setMenu(false);
+        animateTo(Math.max(0, targetY), target);
+
+        target.classList.add('is-nav-target');
+        clearTimeout(highlightTimer);
+        highlightTimer = setTimeout(function () {
+          target.classList.remove('is-nav-target');
+        }, 1300);
+      }
+
+      if (document.fonts && document.fonts.status === 'loading') {
+        document.fonts.ready.then(run);
+      } else {
+        run();
+      }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
@@ -254,20 +316,70 @@
 
       link.addEventListener('click', function (event) {
         event.preventDefault();
-        setMenu(false);
         goTo(hash);
       });
 
       link.addEventListener('keydown', function (event) {
         if (event.key !== 'Enter' && event.key !== ' ') return;
         event.preventDefault();
-        setMenu(false);
         goTo(hash);
       });
     });
+
+    window.addEventListener('wheel', cancelScroll, { passive: true });
+    window.addEventListener('touchstart', cancelScroll, { passive: true });
+  }
+
+  function initReveal() {
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var selectors = [
+      '.section-head', '.testimonial', '.service-card', '.ebook-card', '.contact-card',
+      '.faq-item', '.video-frame', '.about-copy', '.about-photo', '.benefits-grid > *',
+      '.cta-copy', '.cta-panel'
+    ];
+    var elements = [];
+    var seen = new Set();
+
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
+        if (seen.has(el) || el.hasAttribute('data-reveal')) return;
+        seen.add(el);
+        el.setAttribute('data-reveal', '');
+        elements.push(el);
+      });
+    });
+
+    if (!elements.length) return;
+
+    var groups = new Map();
+    elements.forEach(function (el) {
+      var parent = el.parentElement;
+      var group = groups.get(parent) || [];
+      group.push(el);
+      groups.set(parent, group);
+    });
+
+    groups.forEach(function (group) {
+      group.forEach(function (el, index) {
+        el.style.setProperty('--reveal-delay', Math.min(index, 5) * 70 + 'ms');
+      });
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    document.documentElement.classList.add('reveal-ready');
+    elements.forEach(function (el) { observer.observe(el); });
   }
 
   initEmbeddedNav();
+  initReveal();
 
   document.documentElement.classList.add('is-ready');
 })();

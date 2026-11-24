@@ -245,6 +245,7 @@ ${jsTag}
 // ---------- HTML: embed unico (compatibilidade) ----------
 async function buildSingleEmbed() {
   let html = stripSeoHead(source);
+  html = html.replace("</head>", '<link rel="icon" href="data:,">\n</head>');
   html = html.replace(/<html lang="pt-BR"[^>]*>/, htmlTag);
   html = html.replace(/<body>/, `<body data-embed-mode="single">`);
   // No release, `../assets/` nao resolve dentro do embed: troca pela base absoluta (jsDelivr/tag).

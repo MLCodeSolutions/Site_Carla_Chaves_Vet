@@ -1,6 +1,6 @@
 ﻿# Publicar no Google Sites — Drª Carla Chaves
 
-Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.4`
+Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.5`
 publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 
 > O Google Sites não hospeda HTML/CSS/JS próprios. Ele incorpora cada arquivo em um iframe
@@ -10,8 +10,8 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 ## 1. Antes de colar
 
 1. Confirme no navegador (tag exata, sem `@main`):
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.4/dist/main.min.css`
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.4/dist/main.min.js`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.5/dist/main.min.css`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.5/dist/main.min.js`
    - uma imagem, uma fonte e `assets/videos/dicas-01.mp4`
 2. Rode localmente `npm run build:release`, `npm run check`, `npm run sri` e `npm run heights`.
 3. Publique a tag no GitHub antes de abrir o Google Sites (jsDelivr pode levar alguns minutos).
@@ -37,8 +37,9 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 
 Use `dist/embed.html` e defina a altura do bloco em **700–760 px**:
 
-- O site rola **dentro** do iframe; o menu abre, fecha ao clicar em qualquer link e navega pelas
-  seções.
+- O site rola **dentro** do iframe; o menu abre, fecha ao clicar em qualquer link, reabre normalmente
+  e anima a rolagem (~350–650 ms) até a seção, com um destaque breve no alvo.
+- Cards e títulos usam reveal suave; tudo respeita `prefers-reduced-motion`.
 - Não use a altura total do conteúdo (~10.059 px) com este arquivo: sem rolagem interna, o menu
   não navega e sobra espaço branco.
 - Se sobrar espaço branco, aumente um pouco; se houver rolagem dupla, reduza 20–40 px.
@@ -113,6 +114,6 @@ Qualquer mudança em copy, CSS, JS, imagens ou vídeos exige:
 
 1. Editar `src/`/`assets/` (nunca `dist/`).
 2. Rodar build/check/sri/heights/qa.
-3. `npm run build:release` com a **nova tag** (`v1.0.4`, `v1.1.0`, ...).
+3. `npm run build:release` com a **nova tag** (`v1.0.5`, `v1.1.0`, ...).
 4. Commit do `dist/`, tag e push.
 5. Recolar **todos** os blocos no Sites (o hash/tag mudou) e reaplicar as alturas.
