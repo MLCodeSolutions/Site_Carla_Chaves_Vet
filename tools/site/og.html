@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../../src/css/tokens.css">
+  <link rel="stylesheet" href="../../src/css/base.css">
+  <style>
+    html, body { margin: 0; padding: 0; background: #F7F4EA; }
+    #og {
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 78% 18%, #3D633F 0%, #2F4A32 46%, #1E3222 100%);
+      color: #F7F4EA;
+      font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+    }
+    #og .blob { position: absolute; border-radius: 50%; }
+    #og .blob--1 { width: 520px; height: 520px; left: -160px; top: -180px; background: radial-gradient(circle, rgba(242,237,169,.28), rgba(242,237,169,0) 68%); }
+    #og .blob--2 { width: 420px; height: 420px; right: -120px; bottom: -160px; background: radial-gradient(circle, rgba(242,237,169,.18), rgba(242,237,169,0) 70%); }
+    #og .ring { position: absolute; width: 720px; height: 720px; border: 2px dashed rgba(242,237,169,.22); border-radius: 50%; }
+    #og .ring--2 { width: 520px; height: 520px; border-style: solid; border-color: rgba(242,237,169,.12); }
+    #og .content { position: relative; z-index: 2; text-align: center; }
+    #og .mark { width: 190px; height: 190px; margin: 0 auto 26px; background: #F7F4EA; border-radius: 50%; display: grid; place-items: center; padding: 14px; box-sizing: border-box; }
+    #og .mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    #og h1 { margin: 0; font-size: 112px; line-height: .95; letter-spacing: -5px; font-weight: 700; }
+    #og .tag { margin: 18px 0 0; font-family: "Hanken Grotesk", "Segoe UI", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: 7px; text-transform: uppercase; color: #F2EDA9; }
+    #og .foot { position: absolute; left: 0; right: 0; bottom: 34px; z-index: 2; text-align: center; font-family: "Hanken Grotesk", "Segoe UI", sans-serif; font-size: 17px; letter-spacing: .5px; color: rgba(247,244,234,.72); }
+  </style>
+</head>
+<body>
+  <div id="og">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="ring"></span>
+    <span class="ring ring--2"></span>
+    <div class="content">
+      <div class="mark"><img src="../../assets/img/logo-carla-chaves-mark.png" alt=""></div>
+      <h1>Drª Carla Chaves</h1>
+      <p class="tag">Veterinária Domiciliar</p>
+    </div>
+    <div class="foot">Consultas, vacinas e exames no conforto do seu lar</div>
+  </div>
+</body>
+</html>

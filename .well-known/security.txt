@@ -1,0 +1,9 @@
+# security.txt — Drª Carla Chaves (documental, RFC 9116)
+# O site está no Google Sites, que não publica /.well-known/security.txt.
+# Este arquivo existe apenas como referência no repositório.
+Contact: https://github.com/MLCodeSolutions/Site_Carla_Chaves_Vet/security/advisories/new
+Contact: https://github.com/MLCodeSolutions
+Expires: 2027-11-24T00:00:00.000Z
+Preferred-Languages: pt-BR, en
+# Escopo: código deste repositório e embeds via jsDelivr. Não cobre Google Sites,
+# jsDelivr, GitHub, navegadores ou domínio. Não é assinado.
