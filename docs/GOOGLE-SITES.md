@@ -1,6 +1,6 @@
 ﻿# Publicar no Google Sites — Drª Carla Chaves
 
-Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.1`
+Pré-requisitos: repositório `MLCodeSolutions/Site_Carla_Chaves_Vet` público, tag `v1.0.2`
 publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 
 > O Google Sites não hospeda HTML/CSS/JS próprios. Ele incorpora cada arquivo em um iframe
@@ -10,8 +10,8 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
 ## 1. Antes de colar
 
 1. Confirme no navegador (tag exata, sem `@main`):
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1/dist/main.min.css`
-   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1/dist/main.min.js`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.2/dist/main.min.css`
+   - `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.2/dist/main.min.js`
    - uma imagem, uma fonte e `assets/videos/dicas-01.mp4`
 2. Rode localmente `npm run build:release`, `npm run check`, `npm run sri` e `npm run heights`.
 3. Publique a tag no GitHub antes de abrir o Google Sites (jsDelivr pode levar alguns minutos).
@@ -31,7 +31,23 @@ publicada e arquivos `dist/embed-*.html` gerados com `npm run build:release`.
   (ou páginas separadas). O menu de 8 âncoras do site original não é reproduzível dentro dos
   embeds.
 
-## 3. Inserir os 8 blocos (nesta ordem)
+## 3. Inserir os blocos
+
+### 3.1 Opção um bloco só (sem menu interno)
+
+Use `dist/embed-conteudo.html`. Ele tem todas as seções + rodapé, sem header/menu/barra fixa.
+Cole o conteúdo em **um único** bloco incorporado e ajuste a altura:
+
+| Bloco | Altura 390 | Altura 768 | Altura 1440 |
+|---|---:|---:|---:|
+| Página inteira sem menu (`embed-conteudo`) | 17803 | 14091 | 10059 |
+
+- O Google Sites usa uma altura fixa por bloco: no mobile o conteúdo é mais alto; no desktop,
+  mais baixo. Escolha a coluna do dispositivo principal (ou aceite rolagem interna no outro).
+- **Não use `dist/embed.html`**: ele mantém o header/menu interno e causa a rolagem dupla.
+- O menu nativo do Sites não navega para dentro do iframe; use Início/Contato ou páginas separadas.
+
+### 3.2 Opção 8 blocos por seção (recomendado para alturas melhores)
 
 Para cada linha: **Inserir → Incorporar → Código incorporado**, cole o conteúdo do arquivo,
 remova bordas/moldura e ajuste a altura.
@@ -87,6 +103,6 @@ Qualquer mudança em copy, CSS, JS, imagens ou vídeos exige:
 
 1. Editar `src/`/`assets/` (nunca `dist/`).
 2. Rodar build/check/sri/heights/qa.
-3. `npm run build:release` com a **nova tag** (`v1.0.1`, `v1.1.0`, ...).
+3. `npm run build:release` com a **nova tag** (`v1.0.2`, `v1.1.0`, ...).
 4. Commit do `dist/`, tag e push.
 5. Recolar **todos** os blocos no Sites (o hash/tag mudou) e reaplicar as alturas.

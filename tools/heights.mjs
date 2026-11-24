@@ -32,6 +32,7 @@ const EMBEDS = [
   { key: "contato", file: "embed-contato.html", label: "Contato + Rodapé (`embed-contato`)" },
 ];
 const SINGLE = { key: "single", file: "embed.html", label: "Embed único (`embed`)" };
+const SINGLE_CONTENT = { key: "singleContent", file: "embed-conteudo.html", label: "Bloco único sem header/menu (`embed-conteudo`)" };
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -105,7 +106,7 @@ const settle = async (page) => {
 
 const measure = (page) => page.evaluate(() => {
   const mode = document.body.getAttribute("data-embed-mode");
-  if (mode === "section") {
+  if (mode === "section" || mode === "single-content") {
     const main = document.querySelector("#conteudo");
     const bodyStyle = getComputedStyle(document.body);
     const pt = parseFloat(bodyStyle.paddingTop) || 0;
@@ -152,6 +153,7 @@ try {
     viewports: Object.fromEntries(VIEWPORTS.map((v) => [v.key, { width: v.width, height: v.height }])),
     sections: {},
     single: {},
+    singleContent: {},
   };
 
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, reducedMotion: "reduce" });
@@ -163,6 +165,8 @@ try {
   }
   console.log(`medindo ${SINGLE.file}...`);
   result.single = await measureEmbed(context, baseUrl, SINGLE.file);
+  console.log(`medindo ${SINGLE_CONTENT.file}...`);
+  result.singleContent = await measureEmbed(context, baseUrl, SINGLE_CONTENT.file);
   await context.close();
 
   fs.writeFileSync(outFile, JSON.stringify(result, null, 2) + "\n");
@@ -172,6 +176,7 @@ try {
   const rows = EMBEDS.map((embed) => `| ${embed.label} | ${result.sections[embed.key]["390"]} | ${result.sections[embed.key]["768"]} | ${result.sections[embed.key]["1440"]} |`);
   console.log("\n" + header + "\n" + rows.join("\n"));
   console.log(`\n${SINGLE.label}: ${result.single["390"]} / ${result.single["768"]} / ${result.single["1440"]} px (scroll interno; nao usar na tabela)`);
+  console.log(`${SINGLE_CONTENT.label}: ${result.singleContent["390"]} / ${result.singleContent["768"]} / ${result.singleContent["1440"]} px`);
   console.log(`heights: ${path.relative(root, outFile)}`);
 } finally {
   await browser.close();

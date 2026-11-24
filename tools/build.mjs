@@ -114,6 +114,7 @@ const BOOT_CSS = `
 #mlcs-boot .mlcs-boot-inner{display:flex;flex-direction:column;align-items:center;gap:18px;transform:translateY(-2px)}
 #mlcs-boot .mlcs-boot-mark{position:relative;display:grid;place-items:center;width:88px;height:88px;border-radius:50%;background:linear-gradient(150deg,rgba(140,191,122,.24),rgba(242,237,169,.34));border:1px solid rgba(47,74,50,.2);box-shadow:0 0 50px rgba(140,191,122,.22),inset 0 0 30px rgba(242,237,169,.28)}
 #mlcs-boot .mlcs-boot-mark span{font-size:30px;font-weight:800;letter-spacing:-.06em;color:#2F4A32;animation:mlcs-boot-pulse 2.4s ease-in-out infinite}
+#mlcs-boot .mlcs-boot-logo{display:block;width:76px;height:auto;filter:drop-shadow(0 2px 5px rgba(47,74,50,.18))}
 #mlcs-boot .mlcs-boot-ring{position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(47,74,50,.14);border-top-color:#8CBF7A;border-right-color:#2F4A32;animation:mlcs-boot-spin 1.1s linear infinite}
 #mlcs-boot .mlcs-boot-ring::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#F2EDA9;box-shadow:0 0 12px #F2EDA9}
 #mlcs-boot .mlcs-boot-text{margin:0;font-size:16px;font-weight:600;letter-spacing:.02em;color:#2F4A32}
@@ -125,7 +126,12 @@ const BOOT_CSS = `
 @keyframes mlcs-boot-fallback{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media (prefers-reduced-motion:reduce){#mlcs-boot .mlcs-boot-mark span,#mlcs-boot .mlcs-boot-ring,#mlcs-boot .mlcs-boot-dots{animation:none!important}#mlcs-boot .mlcs-boot-dots{clip-path:none}}
 `;
-const BOOT_HTML = `<div id="mlcs-boot" role="status" aria-live="polite" aria-label="Carregando o site"><div class="mlcs-boot-inner"><div class="mlcs-boot-mark" aria-hidden="true"><span>CC</span><i class="mlcs-boot-ring"></i></div><p class="mlcs-boot-text">Carregando<span class="mlcs-boot-dots" aria-hidden="true">...</span></p><small class="mlcs-boot-brand">Drª Carla Chaves</small></div></div>`;
+const bootLogoFile = path.join(root, "assets", "img", "logo-loader.png");
+const bootLogo = fs.existsSync(bootLogoFile) ? fs.readFileSync(bootLogoFile).toString("base64") : "";
+const bootMark = bootLogo
+  ? `<img class="mlcs-boot-logo" src="data:image/png;base64,${bootLogo}" alt="" width="160" height="117">`
+  : `<span>CC</span>`;
+const BOOT_HTML = `<div id="mlcs-boot" role="status" aria-live="polite" aria-label="Carregando o site"><div class="mlcs-boot-inner"><div class="mlcs-boot-mark" aria-hidden="true">${bootMark}<i class="mlcs-boot-ring"></i></div><p class="mlcs-boot-text">Carregando<span class="mlcs-boot-dots" aria-hidden="true">...</span></p><small class="mlcs-boot-brand">Drª Carla Chaves</small></div></div>`;
 const bootHash = "sha256-" + crypto.createHash("sha256").update(BOOT_CSS).digest("base64");
 const BOOT_STYLE = `<style data-mlcs-boot>${BOOT_CSS}</style>`;
 
@@ -248,10 +254,37 @@ async function buildSingleEmbed() {
   return injectBoot(await minify(html));
 }
 
+// ---------- HTML: um bloco unico sem header/menu (Google Sites) ----------
+async function buildContentEmbed() {
+  const blocks = SECTIONS.map(({ name }) => sectionBlocks[name]).join("\n");
+  const html = `<!doctype html>
+${htmlTag}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+${cspMeta}
+${fontPreloads}
+${cssTag}
+</head>
+<body data-embed-mode="single-content">
+<main id="conteudo">
+${blocks}
+</main>
+${jsTag}
+</body>
+</html>`;
+  return injectBoot(await minify(toBase(html)));
+}
+
 // ---------- Escreve os HTML ----------
 const singleFile = path.join(distDir, "embed.html");
 const single = await buildSingleEmbed();
 fs.writeFileSync(singleFile, single);
+
+const contentFile = path.join(distDir, "embed-conteudo.html");
+const contentSingle = await buildContentEmbed();
+fs.writeFileSync(contentFile, contentSingle);
 
 const written = [];
 for (const { name, file } of SECTIONS) {
@@ -275,6 +308,8 @@ const jsGz = gz(jsFile);
 const failures = [];
 const embedSize = Buffer.byteLength(single);
 if (embedSize > BUDGET_EMBED) failures.push(`embed.html ${kb(embedSize)} > ${kb(BUDGET_EMBED)}`);
+const contentSize = Buffer.byteLength(contentSingle);
+if (contentSize > BUDGET_EMBED) failures.push(`embed-conteudo.html ${kb(contentSize)} > ${kb(BUDGET_EMBED)}`);
 for (const { file, size } of written) {
   if (size > BUDGET_EMBED) failures.push(`${file} ${kb(size)} > ${kb(BUDGET_EMBED)}`);
 }
@@ -284,6 +319,7 @@ if (jsGz > BUDGET_JS_GZ) failures.push(`main.min.js gzip ${kb(jsGz)} > ${kb(BUDG
 console.log("base:", dataBase || "(local: ../assets/)");
 console.log("assets:", cdn ? cssHref + " | " + jsSrc : "(relativos, preview local)");
 console.log(`embed.html      ${kb(embedSize).padStart(9)}  (unico)`);
+console.log(`embed-conteudo  ${kb(contentSize).padStart(9)}  (unico sem header/menu)`);
 for (const { file, size } of written) console.log(`${file.padEnd(27)} ${kb(size).padStart(9)}`);
 console.log(`main.min.css    ${kb(cssSize).padStart(9)}  gzip ${kb(cssGz)}`);
 console.log(`main.min.js     ${kb(jsSize).padStart(9)}  gzip ${kb(jsGz)}`);

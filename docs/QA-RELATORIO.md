@@ -1,4 +1,4 @@
-# QA — Drª Carla Chaves (v1.0.1)
+# QA — Drª Carla Chaves (v1.0.2)
 
 Data: 2026-11-24
 
@@ -27,18 +27,20 @@ Data: 2026-11-24
 ## Publicação
 
 - Repositório público: `https://github.com/MLCodeSolutions/Site_Carla_Chaves_Vet`
-- `v1.0.0` publicada inicialmente; **v1.0.1** corrige `srcset`/`poster` que ficavam relativos
-  (`../assets/...`) no build de release e impediam as fotos de carregar no Google Sites.
-- Fotos confirmadas em `assets/img` no GitHub e no jsDelivr (`carla-chaves-hero*.jpg`,
-  `carla-chaves-sobre*.jpg`, logos e OG).
-- Build v1.0.1: `srcset` das fotos e `poster` dos vídeos agora apontam para
-  `https://cdn.jsdelivr.net/gh/MLCodeSolutions/Site_Carla_Chaves_Vet@v1.0.1/assets/...`.
-- Após publicar a tag v1.0.1, recolocar **todos os 8 blocos** no Google Sites.
+- `v1.0.2` adiciona:
+  - logo da marca no boot loader via **PNG base64 inline** (sem requisição extra);
+  - `dist/embed-conteudo.html`, um bloco único **sem header/menu/barra fixa** para quem não quer
+    os 8 blocos;
+  - correção de `srcset`/`poster` (v1.0.1) mantida.
+- Alturas do bloco único: **17803 / 14091 / 10059 px** (390/768/1440).
+- O `dist/embed.html` continua sendo contingência e não deve ser colado no Sites.
+- Após publicar a tag v1.0.2, usar `embed-conteudo.html` **ou** os 8 embeds; não misturar com a
+  v1.0.1.
 
 ## Pendências
 
-- Publicação no Google Sites é manual (não há API/credencial): colar os 8 embeds da v1.0.1,
-  aplicar as alturas e testar na URL publicada (`docs/GOOGLE-SITES.md`).
+- Publicação no Google Sites é manual (não há API/credencial): colar o bloco escolhido, aplicar a
+  altura e testar na URL publicada (`docs/GOOGLE-SITES.md`).
 - Revogar/rotacionar o token que circulou no chat; ele não foi gravado no repositório nem no
   remote do Git.
 - Confirmar autorização da cliente para expor fotos/vídeos em repositório público.

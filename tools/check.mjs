@@ -68,7 +68,7 @@ const expected = [
   "embed-exoticos-servicos.html", "embed-sobre.html", "embed-guias-dicas.html",
   "embed-faq-cta.html", "embed-contato.html",
 ];
-for (const file of ["embed.html", ...expected]) if (!exists(path.join(distDir, file))) fail(`dist/${file} ausente (rode npm run build)`);
+for (const file of ["embed.html", "embed-conteudo.html", ...expected]) if (!exists(path.join(distDir, file))) fail(`dist/${file} ausente (rode npm run build)`);
 for (const file of ["main.min.css", "main.min.js", "integrity.json"]) if (!exists(path.join(distDir, file))) fail(`dist/${file} ausente`);
 
 if (fs.existsSync(path.join(distDir, "integrity.json"))) {
@@ -112,6 +112,30 @@ for (const file of expected) {
   if (styles.length === 1) {
     const hash = "sha256-" + crypto.createHash("sha256").update(styles[0][1]).digest("base64");
     if (!html.includes(hash)) fail(`${file}: hash do loader ausente na CSP`);
+  }
+}
+
+// ---------- Bloco unico sem header/menu ----------
+const contentFile = path.join(distDir, "embed-conteudo.html");
+if (exists(contentFile)) {
+  const html = read(contentFile);
+  if (!html.includes('data-embed-mode="single-content"')) fail("embed-conteudo.html: modo single-content ausente");
+  if (!html.includes('<main id="conteudo">')) fail("embed-conteudo.html: main#conteudo ausente");
+  if (/class="site-header"/.test(html)) fail("embed-conteudo.html: header global presente");
+  if (/class="mobile-bar"/.test(html)) fail("embed-conteudo.html: mobile-bar presente");
+  if (/class="skip-link"/.test(html)) fail("embed-conteudo.html: skip-link presente");
+  if (!html.includes('class="site-footer"')) fail("embed-conteudo.html: rodape ausente");
+  if (!/integrity="sha384-/.test(html)) fail("embed-conteudo.html: SRI ausente");
+  if (/'unsafe-inline'/.test(html)) fail("embed-conteudo.html: unsafe-inline na CSP");
+  if (html.includes('data-base="http') && /(srcset|poster)="[^"]*\.\.\/assets\//.test(html)) {
+    fail("embed-conteudo.html: srcset/poster com caminho relativo no release");
+  }
+  if (Buffer.byteLength(html) > 80 * 1024) fail(`embed-conteudo.html: ${(Buffer.byteLength(html) / 1024).toFixed(1)} KB > 80 KB`);
+  const styles = [...html.matchAll(/<style[^>]*data-mlcs-boot[^>]*>([\s\S]*?)<\/style>/g)];
+  if (styles.length !== 1) fail(`embed-conteudo.html: esperado 1 style do loader, encontrado ${styles.length}`);
+  if (styles.length === 1) {
+    const hash = "sha256-" + crypto.createHash("sha256").update(styles[0][1]).digest("base64");
+    if (!html.includes(hash)) fail("embed-conteudo.html: hash do loader ausente na CSP");
   }
 }
 
